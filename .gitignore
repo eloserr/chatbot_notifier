@@ -16,3 +16,4 @@ logs
 .vscode/
 __pycache__/
 *.sw*
+envcheck.py
