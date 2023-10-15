@@ -5,7 +5,6 @@ from TOKEN import token
 
 bot = telebot.TeleBot(token=token)
 
-
 @bot.message_handler(commands=['start'])
 def start(message: Message):
     # регистрация при помощи json файла
