@@ -4,12 +4,21 @@ import json
 import requests
 from datetime import datetime
 from envparse import Env
+from clients.telegram_client import TelegramClient
 
 env = Env()
 TOKEN = env.str("TOKEN")
 ADMINCHATID = env.int("ADMINCHATID")
 bot = telebot.TeleBot(token=TOKEN)
 
+class MyBot(telebot.Telebot):
+    def __init__(self, telegram_client: TelegramClient, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.telegram_client = telegram_client
+        
+telegram_client = TelegramClient(token=TOKEN, base_url="https://api.telegram.org")
+bot = MyBot(token=TOKEN, telegram_client=telegram_client)
+    
 
 @bot.message_handler(commands=["start"])
 def start(message: Message):
@@ -45,7 +54,7 @@ while True:
         bot.polling()
     except Exception as err:
         # при возникновении ошибки сообщит админу(мне)
-        print("Ошибка", err)
+        bot.telegram_client.post()
         requests.post(
             f"https://api.telegram.org/bot6580423597:AAHp_hi9VriNd6uvUwkmuj6_"
             f"wxy5A48qjMQ/sendMessage?chat_id=1256457948&text={datetime.now()}:::{err.__class__}:::{err}"

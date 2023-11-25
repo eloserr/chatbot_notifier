@@ -9,6 +9,7 @@ logs
 /dist
 
 # The file containing environment variables 
+.venv
 .env
 
 # Ignore IDE specific files
